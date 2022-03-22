@@ -7,15 +7,20 @@
     </nav-bar>
 
     <template>
-      <swiper class="swiper" 
+      <swiper :pagination="{
+          dynamicBullets: true,
+        }"
         :modules="modules"
-        :space-between="30"
-        :effect="'fade'"
-        :navigation="true">
-        <swiper-slide class="slide" v-for="(item,index) in banner" :key="index">
-          <!-- <img :src="url" alt=""> -->
-          <div>slide</div>
-        </swiper-slide>
+        class="swiper">
+        <swiper-slide class="slide">Slide 1</swiper-slide>
+        <swiper-slide>Slide 2</swiper-slide
+        ><swiper-slide>Slide 3</swiper-slide>
+        <swiper-slide>Slide 4</swiper-slide>
+        <swiper-slide>Slide 5</swiper-slide>
+        <swiper-slide>Slide 6</swiper-slide>
+        <swiper-slide>Slide 7</swiper-slide>
+        <swiper-slide>Slide 8</swiper-slide>
+        <swiper-slide>Slide 9</swiper-slide>
       </swiper>
     </template>
 
@@ -24,23 +29,25 @@
 
 <script>
 import NavBar from '@/components/common/navbar/Navbar.vue'
-import { Pagination, Navigation, EffectFade } from 'swiper'
-import { Swiper, swiperSlide ,useSwiper } from 'swiper/vue'
-import 'swiper/css'
-import 'swiper/css/pagination'
-import 'swiper/css/navigation'
-import 'swiper/css/effect-fade'
-import { getHomeData } from '@/network/home'
+// import SwiperClass, { Pagination } from 'Swiper'
+import { Swiper, SwiperSlide } from "swiper/vue";
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+// import "./style.css";
+
+// import required modules
+import { Pagination } from "swiper";
+  import { getHomeData } from '@/network/home'
 export default {
   data(){
     return{
        banner:[],
        commends:[],
-       url:"https://www.baidu.com/img/baidu_jgylogo3.gif"
+       url:"https://img0.baidu.com/it/u=3712997108,442011921&fm=253&fmt=auto&app=138&f=JPEG"
     }
   },
   created (){
-    this.initSwiper()
     getHomeData().then(res=>{
       this.banner = res.data.banner.list
     })
@@ -48,18 +55,15 @@ export default {
   components:{
     NavBar,
     Swiper,
-    swiperSlide
+    SwiperSlide
   },
-  setup(){
+  setup() {
     return{
-      modules:[Pagination, Navigation, EffectFade]
+      modules: [Pagination],
     }
   },
   methods:{
-    initSwiper(){
-      const swiper = useSwiper()
-      return { swiper }
-    }
+   
   }
 }
 </script>
@@ -70,14 +74,16 @@ export default {
   color: white
 }
 
-.swiper {
+/* .swiper {
   /* flex: 1; */
+  /* display: flex;
+  width: 100%;
   height: 180px;
-  background-color: red;
-}
+  background-color: red; */
+/* }  */
 
-.slide {
-  width: 300px;
+/* .slide {
+  width: 320px;
   height: 180px;
-}
+} */
 </style>
