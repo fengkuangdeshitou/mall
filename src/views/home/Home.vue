@@ -9,6 +9,7 @@
     <Recommon :recommons="recommons"></Recommon>
     <Feature></Feature>
     <SegmentView class="segment" :titles="titles"></SegmentView>
+    <good-list></good-list>
     <ul>
       <li v-for="item in 100" :key="item">{{item}}</li>
     </ul>
@@ -21,6 +22,7 @@ import HomeSwiper from './components/HomeSwiper.vue'
 import Recommon from './components/Recommon.vue'
 import Feature from './components/Feature.vue'
 import SegmentView from '@/components/content/SegmentView/SegmentView.vue'
+import GoodList from '@/components/content/goods/GoodList.vue'
 
 import NavBar from '@/components/common/navbar/Navbar.vue'
 import { getHomeData } from '@/network/home'
@@ -34,18 +36,24 @@ export default {
     }
   },
   created (){
-    getHomeData().then(res=>{
+    this.requestHomeData()
+  },
+  methods:{
+    requestHomeData(){
+      getHomeData().then(res=>{
       console.log(res);
       this.banner = res.data.banner.list
       // this.recommons = res.data.recommons
     })
+    }
   },
   components:{
     NavBar,
     HomeSwiper,
     Recommon,
     Feature,
-    SegmentView
+    SegmentView,
+    GoodList
   }
 }
 </script>
