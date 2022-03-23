@@ -22,18 +22,20 @@ export default {
 <style>
 #recommonds {
   display: flex;
-  height: 108px;
-  background-color: white;
-  justify-content: center;
+  height: 130px;
+  background-color: '#f6f6f6';
+  justify-content: space-evenly;
   align-items: center;
   text-align: center;
-}
-
-.common-item {
-  flex: 1;
+  font-size: 16px;
 }
 
 .common-item img {
-  height: 80px;
+  height: 68px;
+  border-radius: 34px;
+}
+
+.common-item div {
+  margin-top: 5px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="home">
     <nav-bar class="home-nav">
       <template #center>
         <div>首页</div>
@@ -7,14 +7,22 @@
     </nav-bar>
     <home-swiper :banner="banner"></home-swiper>
     <Recommon :recommons="recommons"></Recommon>
+    <Feature></Feature>
+    <SegmentView class="segment" :titles="titles"></SegmentView>
+    <ul>
+      <li v-for="item in 100" :key="item">{{item}}</li>
+    </ul>
   </div>
 </template>
 
 <script>
 
-import NavBar from '@/components/common/navbar/Navbar.vue'
 import HomeSwiper from './components/HomeSwiper.vue'
 import Recommon from './components/Recommon.vue'
+import Feature from './components/Feature.vue'
+import SegmentView from '@/components/content/SegmentView/SegmentView.vue'
+
+import NavBar from '@/components/common/navbar/Navbar.vue'
 import { getHomeData } from '@/network/home'
 
 export default {
@@ -22,6 +30,7 @@ export default {
     return{
        banner:[],
        recommons:[1,2,3,4],
+       titles:['流行','新款','精选']
     }
   },
   created (){
@@ -34,15 +43,29 @@ export default {
   components:{
     NavBar,
     HomeSwiper,
-    Recommon
+    Recommon,
+    Feature,
+    SegmentView
   }
 }
 </script>
 
 <style scoped>
+#home{
+  padding-top: 44px;
+}
 .home-nav {
   background-color: var(--color-tint);
-  color: white
+  color: white;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 9;
 }
 
+.segment {
+  position: sticky;
+  top: 44px;
+}
 </style>
