@@ -25,6 +25,8 @@ import SegmentView from '@/components/content/SegmentView/SegmentView.vue'
 import GoodList from '@/components/content/goods/GoodList.vue'
 
 import NavBar from '@/components/common/navbar/Navbar.vue'
+import bus from '@/bus'
+
 import { getHomeData } from '@/network/home'
 
 export default {
@@ -38,7 +40,21 @@ export default {
   created (){
     this.requestHomeData()
   },
+  mounted(){
+    bus.on('imageLoad',()=>{
+      
+    })
+  },
   methods:{
+    debounds(func,delay){
+      let timer = null
+      return function (...args){
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+          func.apply(this,args)
+        }, delay);
+      }
+    },
     requestHomeData(){
       getHomeData().then(res=>{
       console.log(res);
