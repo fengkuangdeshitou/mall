@@ -22,6 +22,7 @@ export default {
   methods:{
     segmentClick(index){
       this.currentIndex = index
+      this.$emit('segmentClick',index)
     }
   }
 }
@@ -53,6 +54,6 @@ export default {
 }
 
 .active span {
-    border-bottom: 2px solid var(--color-high-text);
+  border-bottom: 2px solid var(--color-high-text);
 }
 </style>

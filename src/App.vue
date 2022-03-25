@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view v-slot="{ Component }">
+      <keep-alive>
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
     <Tabbar></Tabbar>
   </div>
 </template>
@@ -17,5 +21,5 @@ export default {
 </script>
 
 <style>
-@import 'assets/css/base.css'
+@import 'assets/css/base.css';
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div id="recommonds">
-    <div class="common-item" v-for="item in recommons" :key="item">
-      <a href="">
-        <img src="http://img.yzcdn.cn/upload_files/2019/02/18/Fk3INAiBkAIockdU7To00haZHSXv.jpg" alt="">
-        <div>热门</div>
+    <div class="common-item" v-for="item in recommons" :key="item.img">
+      <a :href="item.link+item.title">
+        <img :src="item.img" alt="">
+        <div>{{item.title}}</div>
       </a>
     </div>
   </div>
@@ -22,12 +22,17 @@ export default {
 <style>
 #recommonds {
   display: flex;
-  height: 130px;
+  height: 230px;
   background-color: '#f6f6f6';
   justify-content: space-evenly;
   align-items: center;
   text-align: center;
   font-size: 16px;
+  flex-wrap: wrap;
+}
+
+.common-item {
+  width: 25%;
 }
 
 .common-item img {

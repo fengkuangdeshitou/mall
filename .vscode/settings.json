@@ -6,5 +6,6 @@
     "terminal.background": "#2b2424",    
   },
   "scm.inputFontSize": 14,
-  "terminal.integrated.fontSize": 11
+  "terminal.integrated.fontSize": 11,
+  "workbench.editor.showTabs": false
 }

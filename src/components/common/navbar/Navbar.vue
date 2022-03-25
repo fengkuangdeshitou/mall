@@ -18,7 +18,7 @@ export default {
   height: 44px;
   line-height: 44px;
   text-align: center;
-  font-size: 18;
+  font-size: 18px;
   font-weight: 600;
 }
 .left .right{

@@ -66,6 +66,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
+  /* bottom: env(safe-area-inset-bottom); */
   box-shadow: 0px -3px 8px rgba(80, 80, 80, 0.1);
 }
 </style>

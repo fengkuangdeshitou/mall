@@ -1,6 +1,6 @@
 <template>
   <div class="goods">
-    <goods-item></goods-item>
+    <goods-item :item="item" v-for="item in list" :key="item.iid"></goods-item>
   </div>
 </template>
 
@@ -9,6 +9,14 @@
 import GoodsItem from "./GoodsItem.vue"
 
 export default {
+  props:{
+    list:{
+      type:Array,
+      default(){
+        return []
+      }
+    }
+  },
   components:{
     GoodsItem
   }
