@@ -67,7 +67,7 @@ export default {
 @import 'home.css';
 
 .swiper {
-  height: 180px;
+  height: 195px;
 }
 .swiper-pagination .swiper-pagination-bullet {
     width: 8px;

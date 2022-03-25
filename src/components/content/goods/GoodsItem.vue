@@ -1,6 +1,6 @@
 <template>
-  <div class="goods-item">
-    <a :href="item.link">
+  <div class="goods-item" @click="gooddetail">
+    <!-- <a :href="item.link"> -->
       <img :src="item.show.img" alt="" @load="imageLoad">
       <div class="goods-info">
         <p>{{item.title}}</p>
@@ -8,11 +8,12 @@
         <!-- <img src="@/assets/Img/common/collect.svg" alt=""> -->
         <span class="collect">{{item.cfav}}</span>
       </div>
-    </a>
+    <!-- </a> -->
   </div>
 </template>
 
 <script>
+import bus from '@/bus'
 export default {
   props:{
     item:{
@@ -24,7 +25,16 @@ export default {
   },
   methods:{
     imageLoad(){
-      this.$emit('imageLoad')
+      bus.emit('imageLoad')
+    },
+    gooddetail(){
+      this.$router.push('/detail/'+this.item.iid)
+      // this.$router.push({
+      //   path:'/detail',
+      //   query:{
+      //     id:'1000'
+      //   }
+      // })
     }
   }
 }

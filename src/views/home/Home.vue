@@ -5,6 +5,12 @@
         <div>蘑菇街</div>
       </template>
     </nav-bar>
+    <SegmentView 
+        v-show="-offsety>offsetTop"
+        ref="coversegment"
+        @segmentClick="segmentClick"
+        class="segment"
+        :titles="titles"></SegmentView>
     <scroll-view 
       class="scroll-view" 
       ref="scroll" 
@@ -16,7 +22,10 @@
       <home-swiper :banner="banner"></home-swiper>
       <Recommon :recommons="recommons"></Recommon>
       <!-- <Feature></Feature> -->
-      <SegmentView @segmentClick="segmentClick" class="segment" :titles="titles"></SegmentView>
+      <SegmentView 
+        ref="segment"
+        @segmentClick="segmentClick"
+        :titles="titles"></SegmentView>
       <good-list :list="result[currentSort].list"></good-list>
     </scroll-view>
     <scroll-to-top v-show="offsety < -1000" @click="scrollToTopAction" class="scrollToTop"></scroll-to-top>
@@ -32,15 +41,11 @@ import SegmentView from '@/components/content/SegmentView/SegmentView.vue'
 import GoodList from '@/components/content/goods/GoodList.vue'
 
 import NavBar from '@/components/common/navbar/Navbar.vue'
-<<<<<<< HEAD
 import bus from '@/bus'
-
-import { getHomeData } from '@/network/home'
-=======
 import ScrollView from '@/components/common/scrollview/ScrollView.vue'
 import ScrollToTop from '@/components/content/scrollToTop/ScrollToTop.vue'
+
 import { getHomeData, getHomeGoods } from '@/network/home'
->>>>>>> ac36c9f (首页数据对接)
 
 export default {
   data(){
@@ -91,20 +96,14 @@ export default {
        titles:['流行','新款','精选'],
        currentSort:'pop',
        offsety:0,
+       offsetTop:0,
+       ifFiexd:false,
        result:{
-         'pop':{
-           page:0,
-           list:[]
-         },
-         'new':{
-           page:0,
-           list:[]
-         },
-         'sell':{
-           page:0,
-           list:[]
-         }
-       }
+         'pop':{ page:0, list:[] },
+         'new':{ page:0, list:[] },
+         'sell':{ page:0, list:[] }
+       },
+       contentInsert:0
     }
   },
   created (){
@@ -114,17 +113,26 @@ export default {
     this.requestHomeGoods('sell')
   },
   mounted(){
+    const result = this.debounds(this.$refs.scroll.refresh,100)
     bus.on('imageLoad',()=>{
-      
+      result()
     })
+    this.offsetTop = this.$refs.segment.$el.offsetTop;
+  },
+  activated(){
+    this.$refs.scroll.scrollTo(0,this.contentInsert)
+    this.$refs.scroll.refresh()
+  },
+  deactivated(){
+    this.contentInsert = this.$refs.scroll.scroll.y
   },
   methods:{
     debounds(func,delay){
       let timer = null
-      return function (...args){
+      return function(){
         if (timer) clearTimeout(timer)
         timer = setTimeout(() => {
-          func.apply(this,args)
+          func.apply(this)
         }, delay);
       }
     },
@@ -141,7 +149,9 @@ export default {
         const list = res.result.wall.list
         this.result[type].list.push(...list)
         this.result[type].page+=1
-        this.$refs.scroll.finishPullingUp()
+        if (this.$refs.scroll){
+          this.$refs.scroll.finishPullUp()
+        }
       })
     },
     segmentClick(index){
@@ -159,13 +169,14 @@ export default {
         default:
           break;
       }
+      this.$refs.segment.currentIndex = index;
+      this.$refs.coversegment.currentIndex = index;
     },
     scrollViewDidScroll(position){
-      console.log(position);
       this.offsety = position.y
+      this.isFiexd = -position.y > this.offsetTop
     },
     loadMoreActon(){
-      console.log(this.currentSort);
       this.requestHomeGoods(this.currentSort)
     },
     scrollToTopAction(){
@@ -187,7 +198,6 @@ export default {
 
 <style scoped>
 #home{
-  padding-top: 44px;
   padding-bottom: 49px;
   height: 100vh;
   position: relative;
@@ -195,18 +205,23 @@ export default {
 .home-nav {
   background-color: var(--color-tint);
   color: white;
-  position: fixed;
+  /* position: fixed;
   left: 0;
   right: 0;
   top: 0;
-  z-index: 9;
+  z-index: 9; */
 }
 
 .segment {
+  position: relative;
+  z-index: 9;
+}
+
+/* .segment {
   position: sticky;
   top: 44px;
   z-index: 9;
-}
+} */
 
 .scroll-view {
   position: absolute;
