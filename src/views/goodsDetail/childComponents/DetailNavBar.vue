@@ -54,7 +54,6 @@ export default {
 }
 .left-item {
   margin-top: 5px;
-  width: 10px;
   margin-left: 10px;
   margin-right: -20px ;
 }

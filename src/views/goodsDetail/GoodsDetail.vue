@@ -7,6 +7,7 @@
       <detail-shop-info :shopInfo="shopInfo"></detail-shop-info>
       <detail-goods-info :itemInfo="result.itemInfo"></detail-goods-info>
       <detail-params-info :paramsInfo="result.itemParams"></detail-params-info>
+      <detail-comments :comments="result.rate"></detail-comments>
     </scroll-view>
   </div>
 </template>
@@ -23,6 +24,7 @@ import ScrollView from '@/components/common/scrollview/ScrollView.vue'
 import bus from '@/bus'
 import DetailGoodsInfo from './childComponents/DetailGoodsInfo.vue'
 import DetailParamsInfo from './childComponents/DetailParamsInfo.vue'
+import DetailComments from './childComponents/DetailComments.vue'
 
 export default {
   // name:'GoodsDetail',
@@ -54,7 +56,9 @@ export default {
                           tables:[['尺码','M','L','XL','XXL'],['衣长','61.5','63','64.5','66'],
                                   ['胸围','98','104','110','116'],['袖长','63','66','68.5','70.5']]}},
         promotions:{link:'m1s://shoppro?shopId=1o3dvg'},
-        rate:{cRate:144,list:[]},
+        rate:{cRate:144,list:[{canExplain:false,content:'刚好合适，物美价廉，衣服面料很好，穿着很舒服，版型也好看，非常棒',create:1648458539000,images:['https://s11.mogucdn.com/mlcdn/c45406/200812_0e9jk358bh997kd82dhbk84f018ac_511x1080.jpg','https://s5.mogucdn.com/mlcdn/c45406/200812_5j9b8f41jg5hd7f0a627g46g9ll68_511x1080.jpg'],
+              style:'颜色：白 上衣+裤子 尺码：M',
+              user:{avatar:'https://s10.mogucdn.com/mlcdn/5abf39/180118_1f8k77adjfjllicjf6hlg00ac649h_640x640.jpg',nickname:'沙漠骆驼_亲亲呀宝贝'}}]},
         shopInfo:{shopLogo:'https://i-1-lanrentuku.52tup.com/2020/7/24/71913639-2aa2-4c7b-8b3c-40d7faeadce8.jpg',
                   cSells:57876,
                   cGoods:99,
@@ -92,8 +96,9 @@ export default {
     DetailShopInfo,
     ScrollView,
     DetailGoodsInfo,
-    DetailParamsInfo
-} 
+    DetailParamsInfo,
+    DetailComments
+  } 
 }
 </script>
 
