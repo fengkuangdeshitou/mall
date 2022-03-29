@@ -31,7 +31,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .goods-title {
   font-size: 18px;
   margin-top: 13px;

@@ -1,37 +1,45 @@
 <template>
   <div id="goods-detail">
-    <detail-nav-bar class="nav-bar"></detail-nav-bar>
-    <scroll-view :pullUpLoad="true" class="scroll-view" ref="scroll">
+    <detail-nav-bar ref="nav" class="nav-bar" @titleClick="titleClick"></detail-nav-bar>
+    <scroll-view :probeType=3 :pullUpLoad="true" class="scroll-view" ref="scroll" @scrollViewDidScroll="scrollViewDidScroll">
       <custom-swiper class="detail-banner" :bannerArray="result.itemInfo.topImages"></custom-swiper>
       <detail-info :goods="goods"></detail-info>
       <detail-shop-info :shopInfo="shopInfo"></detail-shop-info>
       <detail-goods-info :itemInfo="result.itemInfo"></detail-goods-info>
-      <detail-params-info :paramsInfo="result.itemParams"></detail-params-info>
-      <detail-comments :comments="result.rate"></detail-comments>
+      <detail-params-info ref="params" :paramsInfo="result.itemParams"></detail-params-info>
+      <detail-comments ref="comments" class="comments" :comments="result.rate"></detail-comments>
+      <good-list ref="recommends" class="goods-list" :list="recommend"></good-list>
     </scroll-view>
+    <detail-tool-bar></detail-tool-bar>
   </div>
 </template>
 
 <script>
 
 import CustomSwiper from '@/components/common/swiper/CustomSwiper.vue'
-import { Goods, Shop } from '@/network/detail'
+import { getGoodsRecomments, Goods, Shop } from '@/network/detail'
 import DetailNavBar from './childComponents/DetailNavBar.vue'
 import DetailInfo from './childComponents/DetailInfo.vue'
 import DetailShopInfo from './childComponents/DetailShopInfo.vue'
 
 import ScrollView from '@/components/common/scrollview/ScrollView.vue'
 import bus from '@/bus'
+import { imageLoadMixin } from '@/common/mixin'
+
 import DetailGoodsInfo from './childComponents/DetailGoodsInfo.vue'
 import DetailParamsInfo from './childComponents/DetailParamsInfo.vue'
 import DetailComments from './childComponents/DetailComments.vue'
+import GoodList from '@/components/content/goods/GoodList.vue'
+import DetailToolBar from './childComponents/DetailToolBar.vue'
 
 export default {
   // name:'GoodsDetail',
+  mixins:[imageLoadMixin],
   data(){
     return {
       goods:{},
       shopInfo:{},
+      recommend:[],
       result:{
         columns:['销量 484','收藏 246人','默认快递'],
         detailInfo:{"desc":'此款为2018春秋新款,面料选用类似莫代尔的一种化料'},
@@ -69,20 +77,54 @@ export default {
                   name:"美衣梦莎"},
         skuInfo:{defaultPrice:'￥29.98',isAbroad:false},
         topBar:{img:'s11.mogucdn.com/p1/150811/upload_ieytsmbrmm4'}
-      }
+      },
+      offsetY:[]
     }
   },
   created(){
     this.goods = new Goods(this.result.itemInfo,this.result.columns,this.result.shopInfo.services)
     this.shopInfo = new Shop(this.result.shopInfo)
+    this.requestGoodsRecomments()
+  },
+  methods:{
+    requestGoodsRecomments(){
+      getGoodsRecomments().then(res=>{
+        this.recommend = res.result.wall.list
+        console.log(this.recommend);
+      }).catch(err=>{
+        console.log(err);
+      })
+      // this.$nextTick(()=>{
+        
+      // })
+    },
+    titleClick(index){
+      this.$refs.scroll.scrollTo(0,-this.offsetY[index]+45)
+    },
+    scrollViewDidScroll(position){
+      const offset = -position.y+44
+      if(offset>this.offsetY[0] && offset < this.offsetY[1]){
+        this.$refs.nav.currentIndex = 0
+      }else if(offset>this.offsetY[1] && offset < this.offsetY[2]){
+        this.$refs.nav.currentIndex = 1
+      }else if(offset>this.offsetY[2] && offset < this.offsetY[3]){
+        this.$refs.nav.currentIndex = 2
+      }else if(offset>this.offsetY[3]){
+        this.$refs.nav.currentIndex = 3
+      }
+    }
   },
   mounted(){
-    bus.on('scrollViewDidScroll',(position)=>{
-
-    })
     bus.on('imageLoad',()=>{
-      this.$refs.scroll.refresh()
+      this.offsetY = []
+      this.offsetY.push(0)
+      this.offsetY.push(this.$refs.params.$el.offsetTop)
+      this.offsetY.push(this.$refs.comments.$el.offsetTop)
+      this.offsetY.push(this.$refs.recommends.$el.offsetTop)
     })
+  },
+  destroyed() {
+    bus.off('imageLoad',this.imageLoadFunction)
   },
   computed:{
     id(){
@@ -97,7 +139,9 @@ export default {
     ScrollView,
     DetailGoodsInfo,
     DetailParamsInfo,
-    DetailComments
+    DetailComments,
+    GoodList,
+    DetailToolBar
   } 
 }
 </script>
@@ -113,11 +157,19 @@ export default {
   position:relative;
 }
 .scroll-view{
-  height: calc(100% - 44px);
+  height: calc(100% - 44px - 49px);
   overflow: hidden;
 }
 .detail-banner {
   height: 300px;
   overflow: hidden;
 }
+.comments{
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ccc;
+}
+.goods-list{
+  margin: 10px 3px;
+}
+
 </style>

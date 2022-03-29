@@ -37,6 +37,7 @@ export default {
   methods:{
     itemClick(index){
       this.currentIndex = index
+      this.$emit('titleClick',index)
     },
     popView(){
       this.$router.back()
@@ -55,7 +56,6 @@ export default {
 .left-item {
   margin-top: 5px;
   margin-left: 10px;
-  margin-right: -20px ;
 }
 .title{
   display: flex;
@@ -63,6 +63,7 @@ export default {
   align-items: center;
   font-size: 15px;
   font-weight: 400;
+  padding-right: 44px;
 }
 
 .title-item {

@@ -43,14 +43,14 @@ export default {
   flex: 1;
   text-align: center;
   height: 49px;
-  font-size: 14px;
+  font-size: 12px;
 }
 .tabbar-item img {
-  width: 24pt;
-  height: 24pt;
-  margin-top: 3px;
+  width: 16pt;
+  height: 16pt;
+  margin-top: 5px;
   vertical-align: middle;
-  margin-bottom: 2px;
+  margin-bottom: 0px;
 }
 
 </style>

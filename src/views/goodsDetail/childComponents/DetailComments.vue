@@ -26,7 +26,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .comments-header{
   display: flex;
   justify-content: space-between;

@@ -42,12 +42,14 @@ import GoodList from '@/components/content/goods/GoodList.vue'
 
 import NavBar from '@/components/common/navbar/Navbar.vue'
 import bus from '@/bus'
+import { imageLoadMixin } from '@/common/mixin'
 import ScrollView from '@/components/common/scrollview/ScrollView.vue'
 import ScrollToTop from '@/components/content/scrollToTop/ScrollToTop.vue'
 
 import { getHomeData, getHomeGoods } from '@/network/home'
 
 export default {
+  mixins:[imageLoadMixin],
   data(){
     return{
        banner:[],
@@ -103,7 +105,7 @@ export default {
          'new':{ page:0, list:[] },
          'sell':{ page:0, list:[] }
        },
-       contentInsert:0
+       contentInsert:0,
     }
   },
   created (){
@@ -113,10 +115,6 @@ export default {
     this.requestHomeGoods('sell')
   },
   mounted(){
-    const result = this.debounds(this.$refs.scroll.refresh,100)
-    bus.on('imageLoad',()=>{
-      result()
-    })
     this.offsetTop = this.$refs.segment.$el.offsetTop;
   },
   activated(){
@@ -124,6 +122,7 @@ export default {
     this.$refs.scroll.refresh()
   },
   deactivated(){
+    bus.off('imageLoad',this.homeItemLoader)
     this.contentInsert = this.$refs.scroll.scroll.y
   },
   methods:{
