@@ -14,9 +14,9 @@
         <span>收藏</span>
       </div>
     </div>
-    <div>
-      <span>加入购物车</span>
-      <span>购买</span>
+    <div class="bar-item bar-right">
+      <span class="text car">加入购物车</span>
+      <span class="text buy">购买</span>
     </div>
   </div>
 </template>
@@ -30,7 +30,7 @@ export default {
 <style scoped>
 #toolbar{
   display: flex;
-  width: 100%;
+  width: 100vw;
   height: 49px;
   background-color: #fff;
   text-align: center;
@@ -42,7 +42,7 @@ export default {
 .bar-item>div {
   flex: 1;
 }
-.bar-left .icon{
+.icon{
   display: block;
   width: 22px;
   height: 22px;
@@ -50,10 +50,22 @@ export default {
   background: url('@/assets/Img/detail/detail_bottom.png') 0 0/100%;
 }
 .bar-left .service {
-    background-position:0 -54px;
-  }
+  background-position:0 -54px;
+}
 
-  .bar-left .store {
-    background-position:0 -98px;
-  }
+.bar-left .store {
+  background-position:0 -98px;
+}
+.text{
+  flex: 1;
+  text-align: center;
+  font-size: 18px;
+  color: #333;
+}
+.car{
+  background-color: var(--color-high-text);
+}
+.buy{
+  background-color: yellow;
+}
 </style>
