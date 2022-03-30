@@ -15,15 +15,19 @@
       </div>
     </div>
     <div class="bar-item bar-right">
-      <span class="text car">加入购物车</span>
-      <span class="text buy">购买</span>
+      <div class="text car" @click="addToCart">加入购物车</div>
+      <div class="text buy">购买</div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-
+  methods:{
+    addToCart(){
+      this.$emit('addShop')
+    }
+  }
 }
 </script>
 
@@ -38,6 +42,7 @@ export default {
 .bar-item{
   display: flex;
   flex: 1;
+  color: #333;
 }
 .bar-item>div {
   flex: 1;
@@ -59,13 +64,15 @@ export default {
 .text{
   flex: 1;
   text-align: center;
-  font-size: 18px;
-  color: #333;
+  font-size: 16px;
+  color: white;
+  line-height: 49px;
 }
 .car{
   background-color: var(--color-high-text);
 }
 .buy{
-  background-color: yellow;
+  background-color: #ffe817;
+  color: #333
 }
 </style>

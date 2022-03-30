@@ -28,13 +28,12 @@ export default {
       bus.emit('imageLoad')
     },
     gooddetail(){
-      this.$router.push('/detail/'+this.item.iid)
-      // this.$router.push({
-      //   path:'/detail',
-      //   query:{
-      //     id:'1000'
-      //   }
-      // })
+      this.$router.push({
+        path:'/detail/'+this.item.iid,
+        params:{
+          iid:this.item
+        }
+      })
     }
   }
 }

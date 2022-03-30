@@ -10,7 +10,7 @@
       <detail-comments ref="comments" class="comments" :comments="result.rate"></detail-comments>
       <good-list ref="recommends" class="goods-list" :list="recommend"></good-list>
     </scroll-view>
-    <detail-tool-bar></detail-tool-bar>
+    <detail-tool-bar @addShop="addShop"></detail-tool-bar>
   </div>
 </template>
 
@@ -33,7 +33,6 @@ import GoodList from '@/components/content/goods/GoodList.vue'
 import DetailToolBar from './childComponents/DetailToolBar.vue'
 
 export default {
-  // name:'GoodsDetail',
   mixins:[imageLoadMixin],
   data(){
     return {
@@ -42,7 +41,7 @@ export default {
       recommend:[],
       result:{
         columns:['销量 484','收藏 246人','默认快递'],
-        detailInfo:{"desc":'此款为2018春秋新款,面料选用类似莫代尔的一种化料'},
+        detailInfo:{desc:'此款为2018春秋新款,面料选用类似莫代尔的一种化料'},
         itemInfo:{desc:'新款上市',
                   topImages:['https://imgservice.suning.cn/uimg1/b2c/image/F7PE5uJxjA_NjDaoII6ncA.jpg',
                               'https://img.alicdn.com/bao/uploaded/i3/3328003896/O1CN01J2XHEY1eePocVqEvg_!!0-item_pic.jpg'],
@@ -90,7 +89,6 @@ export default {
     requestGoodsRecomments(){
       getGoodsRecomments().then(res=>{
         this.recommend = res.result.wall.list
-        console.log(this.recommend);
       }).catch(err=>{
         console.log(err);
       })
@@ -112,6 +110,18 @@ export default {
       }else if(offset>this.offsetY[3]){
         this.$refs.nav.currentIndex = 3
       }
+    },
+    addShop(){
+      const obj = {
+        iid:this.params.iid,
+        logo:this.params.show.img,
+        title:this.params.title,
+        desc:this.result.detailInfo.desc,
+        price:this.params.price.substring(1,this.params.price.length),
+        check:true,
+        count:1
+      }
+      this.$store.dispatch('addCartList',obj)
     }
   },
   mounted(){
@@ -127,8 +137,8 @@ export default {
     bus.off('imageLoad',this.imageLoadFunction)
   },
   computed:{
-    id(){
-      return this.$route.params.id
+    params(){
+      return this.$route.params
     }
   },
   components:{
