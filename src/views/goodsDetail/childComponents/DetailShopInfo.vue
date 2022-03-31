@@ -19,7 +19,7 @@
       <div class="score">
         <div class="score-item" v-for="item in shopInfo.score" :key="item.name">
           <span>{{item.name}}</span>
-          <span class="item-score" :style="{color:item.isBetter === true ? 'var(--color-high-text)' : '#5ea732'}">{{item.score}}</span>
+          <span class="item-score" :style="{color:item.isBetter === true ? 'var(--color-high-text)' : '#5ea732'}">{{item.score.toFixed(2)}}</span>
           <span :style="{color:'white',backgroundColor:item.isBetter === true ? 'var(--color-high-text)' : '#5ea732'}">{{item.isBetter?'高':'低'}}</span>
         </div>
       </div>

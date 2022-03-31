@@ -63,6 +63,7 @@ export default {
   display: block;
   margin-top: 5px;
   border-radius: 6px;
+  object-fit: cover;
 }
 .info{
   margin-left: 10px;

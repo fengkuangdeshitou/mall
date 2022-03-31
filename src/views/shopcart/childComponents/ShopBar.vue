@@ -1,7 +1,7 @@
 <template>
   <div id="checkbar">
     <div class="content">
-      <check-button></check-button>
+      <check-button :status="activestatus" @activeStatus="activeStatus"></check-button>
       <div class="text">全选</div>
       <div class="price">合计:￥{{price}}</div>
     </div>
@@ -14,8 +14,13 @@
 <script>
 import bus from "@/bus"
 import CheckButton from "./CheckButton.vue"
+import { AllSelectShopCart,AllCancelShopCart } from '@/store/mutation-types'
   export default {
     computed:{
+      activestatus(){
+        if (this.$store.state.cartList == 0) return false
+        return !this.$store.state.cartList.find( item => !item.check)
+      },
       price(){
         return this.$store.state.cartList.reduce((pre,current)=>{
           return pre += (current.check?current.count*current.price:0)
@@ -29,7 +34,16 @@ import CheckButton from "./CheckButton.vue"
       bus.on('activeStatus',(status)=>{
         this.selectArray = status ? this.$store.state.cartList : []
       })
-    }  
+    },
+    methods:{
+      activeStatus(){
+        if(!this.activestatus){
+          this.$store.commit(AllSelectShopCart)
+        }else {
+          this.$store.commit(AllCancelShopCart)
+        }
+      }
+    }
   }
 </script>
 

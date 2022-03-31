@@ -7,7 +7,7 @@
       :autoplay="options.autoplay"
       :loop=options.loop>
       <swiper-slide v-for="item in bannerArray" :key="item">
-        <img :src="item" alt="">
+        <img :src="item" alt="" @load="imageLoad">
       </swiper-slide>
     </swiper>
   </div>
@@ -21,6 +21,7 @@ SwiperCore.use([Autoplay,Pagination])
 import "swiper/css";
 import "swiper/css/pagination";
 import "@/views/home/components/home.css";
+import bus from "@/bus";
 export default {
   data(){
     return {
@@ -49,6 +50,11 @@ export default {
   components:{
     Swiper,
     SwiperSlide
+  },
+  methods:{
+    imageLoad(){
+      bus.emit('imageLoad')
+    }
   }
 }
 </script>

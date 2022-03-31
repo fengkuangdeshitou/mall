@@ -14,6 +14,8 @@
 
 <script>
 import bus from '@/bus'
+import GoodsDetail from '@/views/goodsDetail/GoodsDetail.vue'
+
 export default {
   props:{
     item:{
@@ -29,10 +31,9 @@ export default {
     },
     gooddetail(){
       this.$router.push({
-        path:'/detail/'+this.item.iid,
-        params:{
-          iid:this.item
-        }
+        // path:'/detail/'+this.item.iid,
+        name:'detail',
+        params:this.item
       })
     }
   }

@@ -25,6 +25,7 @@ import DetailShopInfo from './childComponents/DetailShopInfo.vue'
 import ScrollView from '@/components/common/scrollview/ScrollView.vue'
 import bus from '@/bus'
 import { imageLoadMixin } from '@/common/mixin'
+import { mapActions } from 'vuex'
 
 import DetailGoodsInfo from './childComponents/DetailGoodsInfo.vue'
 import DetailParamsInfo from './childComponents/DetailParamsInfo.vue'
@@ -33,6 +34,7 @@ import GoodList from '@/components/content/goods/GoodList.vue'
 import DetailToolBar from './childComponents/DetailToolBar.vue'
 
 export default {
+  name:'detail',
   mixins:[imageLoadMixin],
   data(){
     return {
@@ -81,14 +83,17 @@ export default {
     }
   },
   created(){
+    console.log(this.params);
     this.goods = new Goods(this.result.itemInfo,this.result.columns,this.result.shopInfo.services)
     this.shopInfo = new Shop(this.result.shopInfo)
     this.requestGoodsRecomments()
   },
   methods:{
+    ...mapActions(['addCartList']),
     requestGoodsRecomments(){
       getGoodsRecomments().then(res=>{
         this.recommend = res.result.wall.list
+        console.log(this.recommend);
       }).catch(err=>{
         console.log(err);
       })
@@ -114,14 +119,16 @@ export default {
     addShop(){
       const obj = {
         iid:this.params.iid,
-        logo:this.params.show.img,
+        logo:'https://s3.mogucdn.com'+this.params.similarityUrl.split('&imgSurl=')[1],
         title:this.params.title,
         desc:this.result.detailInfo.desc,
         price:this.params.price.substring(1,this.params.price.length),
         check:true,
         count:1
       }
-      this.$store.dispatch('addCartList',obj)
+      this.$store.dispatch('addCartList',obj).then(res=>{
+        this.$toast.show(res)
+      })
     }
   },
   mounted(){
@@ -130,7 +137,9 @@ export default {
       this.offsetY.push(0)
       this.offsetY.push(this.$refs.params.$el.offsetTop)
       this.offsetY.push(this.$refs.comments.$el.offsetTop)
-      this.offsetY.push(this.$refs.recommends.$el.offsetTop)
+      if(this.recommend.length>0){
+        this.offsetY.push(this.$refs.recommends.$el.offsetTop)
+      }
     })
   },
   destroyed() {
@@ -151,7 +160,7 @@ export default {
     DetailParamsInfo,
     DetailComments,
     GoodList,
-    DetailToolBar
+    DetailToolBar,
   } 
 }
 </script>

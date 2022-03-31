@@ -28,7 +28,8 @@ const routes = [
     component:Profile
   },
   {
-    path:'/detail/:id',
+    path:'/detail/:iid',
+    name:'detail',
     component:GoodsDetail
   }
 ]
